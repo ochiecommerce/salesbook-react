@@ -24,7 +24,7 @@ const PropertyDetails = ({id}) => {
         <CardMedia
           component="img"
           height="400"
-          image={property.image || "/media/images/image1.webp"}
+          image={property.image || "http://localhost:9900/media/images/image1.webp"}
           alt={property.title}
         />
         <CardContent>

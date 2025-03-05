@@ -53,7 +53,7 @@ const LandingPage = () => {
                                     <CardMedia
                                         component="img"
                                         height="200"
-                                        image={property.image || "http:localhost:9900/media/images/image1.webp"}
+                                        image={property.image || "http://localhost:9900/media/images/image1.webp"}
                                         alt={property.title}
                                     />
                                     <CardContent>

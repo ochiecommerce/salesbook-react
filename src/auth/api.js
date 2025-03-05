@@ -6,10 +6,16 @@ export class AuthApi{
     }
     getUser = async ()=>{
         let token = localStorage.getItem('token')
-        if(token){
-            this.api.defaults.headers.common['Authorization']=`Token ${token}`
-            return await this.api.get("auth/user/")
+        try{
+            if(token){
+                this.api.defaults.headers.common['Authorization']=`Token ${token}`
+                return await this.api.get("auth/user/")
+            }
         }
+        catch(e){
+            console.log(e)
+        }
+        
     }
     logout(){
         localStorage.removeItem('token');
