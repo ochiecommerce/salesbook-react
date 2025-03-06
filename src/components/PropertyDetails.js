@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Container, Typography, Stack,Card, CardMedia, CardContent, Button } from "@mui/material";
-import axios from "axios";
+import { Container, Typography,Card, CardMedia, CardContent} from "@mui/material";
 import QuickActions from "./QuickActions";
 import LoadingAnimation from "./Loading";
 import api from "../api";

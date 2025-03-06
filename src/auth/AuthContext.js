@@ -8,15 +8,19 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
   const api = new AuthApi()
-  useEffect(() => {
-    api.getUser().then(
+
+    if(!user)api.getUser().then(
         user=>{
-            setUser(user)
+          console.log('user:',user.data)
+            setUser(user.data)
     setLoading(false)
         }
     )
-    
-  }, []);
+    .catch(()=>{
+        setUser(null)
+    setLoading(false)
+    }
+    )
 
   const login = async (credentials) => {
     await api.login(credentials)

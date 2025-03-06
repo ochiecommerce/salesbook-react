@@ -5,7 +5,7 @@ export class AuthApi{
         this.api = api
     }
     getUser = async ()=>{
-        let token = localStorage.getItem('token')
+        let token = localStorage.getItem('token');
         try{
             if(token){
                 this.api.defaults.headers.common['Authorization']=`Token ${token}`

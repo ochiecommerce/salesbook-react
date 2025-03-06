@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { AppBar, Toolbar, Typography, Button, Container, Grid, Card, CardContent, CardMedia } from "@mui/material";
+import { Typography, Container, Grid, Card, CardContent, CardMedia } from "@mui/material";
 import PropertyFilter from "./PropertyFilter";
 import LoadingAnimation from "./components/Loading";
 import api from "./api";
@@ -20,17 +20,6 @@ const LandingPage = () => {
     return (
         <>
             {/* Navigation Bar */}
-            <AppBar position="static" color="primary">
-                <Toolbar>
-                    <Typography variant="h6" sx={{ flexGrow: 1 }}>
-                        Real Estate Hub
-                    </Typography>
-                    <Button color="inherit">Home</Button>
-                    <Button color="inherit">Properties</Button>
-                    <Button color="inherit">Login</Button>
-                    <Button color="inherit">Sign Up</Button>
-                </Toolbar>
-            </AppBar>
 
             {/* Hero Section */}
             <Container sx={{ textAlign: "center", padding: "2rem 0" }}>

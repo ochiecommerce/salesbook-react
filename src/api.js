@@ -6,5 +6,5 @@ let backends = {
 };
 
 const api = axios.create({ baseURL: backends[process.env.NODE_ENV] });
-api.defaults.headers['ngrok-skip-browser-warning']='true';
+//api.defaults.headers['ngrok-skip-browser-warning']='true';
 export default api;

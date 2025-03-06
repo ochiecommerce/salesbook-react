@@ -14,28 +14,6 @@ function ComponentModal({ isOpen, children, onClose }) {
     )
 }
 
-class PageOrModal{
-    constructor(){
-        this.components = {}
-    }
-    addComponent(key,component,path){
-        this.components[key] = {component,path}
-    }
-    open(key){
-        this.components[key].path()
-    }
-    close(key){
-        this.components[key].path()
-    }
-    getComponent(key){
-        return this.components[key].component
-    }
-    getModals(){
-        return Object.keys(this.components).map(key=>{
-            return <ComponentModal isOpen={false} onClose={()=>this.close(key)}>{this.getComponent(key)}</ComponentModal>
-        })
-    }
-}
 
 export default function QuickActions({ id }) {
     const isLargeDevice = useMediaQuery('(min-width:768px)')
