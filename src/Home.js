@@ -1,55 +1,34 @@
 import React, { useEffect, useState } from "react";
-import { Typography, Container, Grid, Card, CardContent, CardMedia } from "@mui/material";
-import PropertyFilter from "./PropertyFilter";
+import { Container, Grid } from "@mui/material";
 import LoadingAnimation from "./components/Loading";
-import api from "./api";
+import { getPhonebooks } from "./api";
+import { useAuth } from "./auth/AuthContext";
+import { Link } from "./components/Navigation";
 
 const LandingPage = () => {
-    const [properties, setProperties] = useState([]);
+    const [phonebooks, setPhonebooks] = useState([]);
+    const { user } = useAuth();
+    getPhonebooks()
+        .then(response => setPhonebooks(response.data))
+        .catch(error => console.error("Error fetching properties:", error));
 
-    useEffect(() => {
-        api.get("/properties/")
-            .then(response => setProperties(response.data))
-            .catch(error => console.error("Error fetching properties:", error));
-    }, []);
 
-  if(!properties){
-    return <LoadingAnimation/>
-  }
+    if (!phonebooks) {
+        return <LoadingAnimation />
+    }
 
     return (
         <>
-            {/* Navigation Bar */}
-
-            {/* Hero Section */}
-            <Container sx={{ textAlign: "center", padding: "2rem 0" }}>
-                <Typography variant="h3" gutterBottom>
-                    Find Your Dream Property
-                </Typography>
-                <Typography variant="h6" color="textSecondary">
-                    Browse from thousands of listings and find the perfect home or investment.
-                </Typography>
-            </Container>
-
-            {/* Property Listings */}
             <Container>
-                <PropertyFilter onFilter={(filters) => console.log(filters)} />
+                {user && <Link to="/new_phonebook">Create Phonebook</Link>}
                 <Grid container spacing={3}>
-                    {properties.map((property) => (
+                    {phonebooks.map((property) => (
                         <Grid item xs={12} sm={6} md={4} key={property.id}>
-                            <a href={`/properties/${property.id}`}>
-                                <Card>
-                                    <CardMedia
-                                        component="img"
-                                        height="200"
-                                        image={property.image || "http://localhost:9900/media/images/image1.webp"}
-                                        alt={property.title}
-                                    />
-                                    <CardContent>
-                                        <Typography variant="h6">{property.title}</Typography>
-                                        <Typography color="textSecondary">${property.price}</Typography>
-                                    </CardContent>
-                                </Card>
+                            <a href={`/phonebooks/${property.id}`}>
+                                <div>
+                                    <p>{property.name}</p>
+                                    <p>{property.creator}</p>
+                                </div>
                             </a>
                         </Grid>
                     ))}

@@ -1,28 +1,34 @@
 import api from "../api";
-    
-export class AuthApi{
-    constructor(){
+
+export class AuthApi {
+    constructor() {
         this.api = api
     }
-    getUser = async ()=>{
+    getUser = async () => {
         let token = localStorage.getItem('token');
-        try{
-            if(token){
-                this.api.defaults.headers.common['Authorization']=`Token ${token}`
+        try {
+            if (token) {
+                this.api.defaults.headers.common['Authorization'] = `Token ${token}`
                 return await this.api.get("auth/user/")
             }
         }
-        catch(e){
+        catch (e) {
             console.log(e)
         }
-        
+
     }
-    logout(){
+    logout() {
         localStorage.removeItem('token');
-    delete this.api.defaults.headers.common['Authorization'];
+        delete this.api.defaults.headers.common['Authorization'];
     }
-    async login(credentials){
+    async login(credentials) {
         const response = await this.api.post('auth/login/', credentials);
+        localStorage.setItem('token', response.data.key);
+        this.api.defaults.headers.common['Authorization'] = `Token ${response.data.key}`;
+    }
+
+    async register(credentials) {
+        const response = await this.api.post('auth/register/', credentials);
         localStorage.setItem('token', response.data.key);
         this.api.defaults.headers.common['Authorization'] = `Token ${response.data.key}`;
     }
