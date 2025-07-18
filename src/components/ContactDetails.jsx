@@ -1,23 +1,25 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import {
     Card,
     CardContent,
     Typography,
-    Button,
-    Stack,
     Divider,
     Box,
 } from "@mui/material";
+import { getContact } from "../api";
 
-import { usePhonebook } from "../context/PhonebookContext";
-const ContactDetails = ({ contact, onEdit, onAddNote }) => {
+const ContactDetails = () => {
     const { contactId, phonebookId } = useParams();
-    const { getContact } = usePhonebook();
+    const [contact,setContact]=useState({})
 
-    if (!contact){
-        contact = getContact(phonebookId, contactId);
-    }
+    useEffect(()=>{
+        getContact(phonebookId,contactId).then(res=>{
+            console.log(res.data)
+            setContact(res.data)
+        })
+    },[])
+    
     return (
         <Card sx={{ mt: 4 }}>
             <CardContent>
@@ -43,9 +45,11 @@ const ContactDetails = ({ contact, onEdit, onAddNote }) => {
                 <Divider sx={{ my: 2 }} />
 
                 <Box>
-                    <Typography variant="subtitle1" fontWeight="bold" gutterBottom>
+                    <Typography variant="subtitle2" fontWeight="bold" gutterBottom>
                         Notes
+
                     </Typography>
+                    
                     {contact.notes && contact.notes.length > 0 ? (
                         contact.notes.map((note, idx) => (
                             <Typography key={idx} variant="body2" sx={{ mb: 1 }}>
@@ -58,15 +62,6 @@ const ContactDetails = ({ contact, onEdit, onAddNote }) => {
                         </Typography>
                     )}
                 </Box>
-
-                <Stack direction="row" spacing={2} sx={{ mt: 3 }}>
-                    <Button variant="outlined" onClick={() => onEdit(contact)}>
-                        Edit Contact
-                    </Button>
-                    <Button variant="contained" onClick={() => onAddNote(contact)}>
-                        Add Note
-                    </Button>
-                </Stack>
             </CardContent>
         </Card>
     );

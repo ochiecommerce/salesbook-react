@@ -1,6 +1,6 @@
 // PhonebookContext.jsx
 import React, { createContext, useContext, useState, useEffect } from "react";
-
+import { getPhonebooks, getContact, createContact,createPhonebook } from "../api";
 const PhonebookContext = createContext();
 
 export const usePhonebook = () => useContext(PhonebookContext);
@@ -10,8 +10,8 @@ export const PhonebookProvider = ({ children }) => {
 
   // Load from localStorage
   useEffect(() => {
-    const stored = localStorage.getItem("phonebooks");
-    if (stored) setPhonebooks(JSON.parse(stored));
+      // Fetch from API if not found in localStorage
+      getPhonebooks().then((res) => setPhonebooks(res.data));
   }, []);
 
   // Save to localStorage
@@ -20,7 +20,11 @@ export const PhonebookProvider = ({ children }) => {
   }, [phonebooks]);
 
   const createPhonebook = (pb) => {
-    setPhonebooks((prev) => [...prev, { ...pb, id: Date.now(), contacts: [] }]);
+    setPhonebooks((prev) => [...prev, { ...pb, id: Date.now() }]);
+    // Optionally, you can also call the API to persist the new phonebook
+    createPhonebook(pb).then((res) => {
+      // Handle response if needed
+    });
   };
 
   const updatePhonebook = (id, updates) => {

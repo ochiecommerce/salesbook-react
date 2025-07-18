@@ -8,7 +8,12 @@ import {
   Stack,
 } from "@mui/material";
 
+import { createContact } from "../api";
+import { useNavigate, useParams } from "react-router-dom";
+
 const ContactForm = ({ onSubmit, contact = null, onCancel }) => {
+  const navigate = useNavigate()
+  const {phonebookId} = useParams()
   const [formData, setFormData] = useState({
     name: "",
     phone: "",
@@ -40,10 +45,12 @@ const ContactForm = ({ onSubmit, contact = null, onCancel }) => {
     const newContact = {
       ...contact,
       ...formData,
-      id: contact?.id || Date.now(),
-      notes: contact?.notes || [],
     };
-    onSubmit(newContact);
+    console.log(newContact)
+    createContact(phonebookId,newContact).then((res)=>{
+      console.log(res.data)
+      navigate(`/phonebooks/${phonebookId}/contacts`)
+    })
     setFormData({ name: "", phone: "", email: "", address: "" });
   };
 

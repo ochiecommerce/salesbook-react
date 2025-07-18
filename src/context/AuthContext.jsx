@@ -8,13 +8,13 @@ export const AuthProvider = ({ children }) => {
   const [token, setToken] = useState(() => localStorage.getItem("token"));
   const [user, setUser] = useState(null);
 
-  const login = async (username, password) => {
-    const data = await authApi.login({ username, password });
-    localStorage.setItem("token", data.access || data.key); // dj-rest-auth may return 'access' or 'key'
-    setToken(data.access || data.key);
-
-    const userRes = await authApi.getUser(data.access || data.key);
-    setUser(userRes.data);
+  const login = (credentials) => {
+    return authApi.login(credentials).then((res)=>{
+      const key = res.key
+      localStorage.setItem("token", key); // dj-rest-auth may return 'access' or 'key'
+      setToken(key);
+      authApi.getUser(key).then(res=>setUser(res.data))
+    })
   };
 
   const logout = async () => {
