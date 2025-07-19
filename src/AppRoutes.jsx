@@ -11,7 +11,7 @@ import ContactForm from "./components/ContactForm";
 import ContactDetails from "./components/ContactDetails";
 
 import { useAuth } from "./context/AuthContext";
-import RegisterPage from "./components/RegisterPage";
+import { RegisterPage } from "./components/RegisterPage";
 import LoginDialog from "./components/LoginPage";
 import NotesPage from "./components/NotesPage";
 

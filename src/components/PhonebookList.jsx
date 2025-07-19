@@ -9,7 +9,6 @@ import {
   Fab,
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
-import Person from '@mui/icons-material/Person'
 
 const PhonebookList = () => {
   const [phonebooks, setPhonebooks] = useState([]);
@@ -27,11 +26,32 @@ const PhonebookList = () => {
 
     fetchPhonebooks();
   }, []); // ✅ Only fetch on component mount
+  if (!phonebooks) return <div>Loading...</div>;
+  if (phonebooks.length === 0) {
+    return (
+      <div style={{ textAlign: "center", marginTop: "20px" }}>
+        <Typography variant="h5" gutterBottom>
+          No Phonebooks Available
+        </Typography>
+        <Typography variant="body1" gutterBottom>
+          You can create a new phonebook by clicking the button below.
+        </Typography>
+        <Fab
+          color="primary"
+          aria-label="add"
+          onClick={() => navigate("/phonebooks/new")}
+          sx={{ marginTop: "20px" }}
+        >
+          <AddIcon />
+        </Fab>
+      </div>
+    );
+  }
 
   return (
     <div>
       <Typography variant="h4" gutterBottom>
-        Your Phonebooks<Person/>
+        Your Phonebooks
       </Typography>
 
       <Grid container spacing={2}>

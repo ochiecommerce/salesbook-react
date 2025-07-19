@@ -1,5 +1,5 @@
-// components/LoginPage.jsx
-import React, { useState } from "react";
+// components/RegisterPage.jsx
+import React, { useState, useEffect, useRef } from "react";
 import {
   Box,
   Button,
@@ -15,46 +15,103 @@ import {
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { useNavigate, Link as RouterLink } from "react-router-dom";
 import axios from "axios";
+import { checkUsername } from "../api";
+import { useAuth } from "../context/AuthContext";
 
-const RegisterPage = () => {
+export const UsernameInput = ({ username,setUsername}) => {
+  const [usernameError, setUsernameError] = useState("");
+  const debounceTimeout = useRef(null);
+  const handleUsernameChange = (e) => {
+    const value = e.target.value;
+    setUsername(value);
+    setUsernameError("");
+
+    // Debounce the API call (wait 300ms after typing)
+    if (debounceTimeout.current) {
+      clearTimeout(debounceTimeout.current);
+    }
+
+    debounceTimeout.current = setTimeout(() => {
+      if (value.length >= 3) {
+        checkUsername(value)
+          .then((response) => {
+            if (!response.data.valid) {
+              setUsernameError(
+                response.data.error || "Username is not available"
+              );
+            }
+          })
+          .catch(() => {
+            setUsernameError("Could not validate username");
+          });
+      }
+    }, 300);
+  };
+  return (
+    <TextField
+      label="Username"
+      fullWidth
+      required
+      margin="normal"
+      value={username}
+      onChange={handleUsernameChange}
+      error={!!usernameError}
+      helperText={
+        usernameError || "Must be unique (letters, numbers, underscores)."
+      }
+    />
+  );
+};
+
+export const RegisterPage = () => {
   const navigate = useNavigate();
+  const {setToken } = useAuth()
   const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password1, setPassword1] = useState("");
   const [password2, setPassword2] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+  const [globalError, setGlobalError] = useState("");
+
 
   const handleTogglePassword = () => {
     setShowPassword(!showPassword);
   };
 
-  const handleLogin = async (e) => {
+
+  const handleRegister = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setError("");
-
+    setGlobalError("");
 
     if (password1 !== password2) {
-      setLoading(false)
-      setError('Password confirmation error')
+      setLoading(false);
+      setGlobalError("Passwords do not match");
+      return;
     }
-    axios.post("/api/auth/registration/", {
-      username: email,
-      password1,
-      password2
-    }).then((response) => {
-      const token = response.data.key;
-      localStorage.setItem("token", token);
-      navigate("/"); // Redirect to home or dashboard
-    }).catch((err) => {
-      let errors = err.response?.data?.non_field_errors?.[0]
-      let usernameError = err.response?.data?.username
-      console.log(err)
-      setError(
-        errors || usernameError || "Registration failed. Please try again."
-      );
-    })
+
+    axios
+      .post("/api/auth/registration/", {
+        email,
+        username,
+        password1,
+        password2,
+      })
+      .then((response) => {
+        const token = response.data.key;
+        localStorage.setItem("token", token);
+        setToken(token)
+        navigate("/");
+      })
+      .catch((err) => {
+        const errors = err.response?.data?.non_field_errors?.[0];
+        const usernameErrors = err.response?.data?.username?.join(", ");
+        setGlobalError(
+          errors || usernameErrors || "Registration failed. Please try again."
+        );
+        setLoading(false);
+      });
   };
 
   return (
@@ -72,21 +129,23 @@ const RegisterPage = () => {
           Create account
         </Typography>
 
-        {error && (
+        {globalError && (
           <Alert severity="error" sx={{ mb: 2 }}>
-            {error}
+            {globalError}
           </Alert>
         )}
 
-        <form onSubmit={handleLogin}>
+        <form onSubmit={handleRegister}>
           <TextField
-            label="Username"
+            label="Email"
             fullWidth
             required
             margin="normal"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
+
+          <UsernameInput username={username} setUsername={setUsername} />
 
           <TextField
             label="Password"
@@ -99,17 +158,14 @@ const RegisterPage = () => {
             InputProps={{
               endAdornment: (
                 <InputAdornment position="end">
-                  <IconButton
-                    aria-label="toggle password visibility"
-                    onClick={handleTogglePassword}
-                    edge="end"
-                  >
+                  <IconButton onClick={handleTogglePassword} edge="end">
                     {showPassword ? <VisibilityOff /> : <Visibility />}
                   </IconButton>
                 </InputAdornment>
               ),
             }}
           />
+
           <TextField
             label="Confirm Password"
             fullWidth
@@ -121,11 +177,7 @@ const RegisterPage = () => {
             InputProps={{
               endAdornment: (
                 <InputAdornment position="end">
-                  <IconButton
-                    aria-label="toggle password visibility"
-                    onClick={handleTogglePassword}
-                    edge="end"
-                  >
+                  <IconButton onClick={handleTogglePassword} edge="end">
                     {showPassword ? <VisibilityOff /> : <Visibility />}
                   </IconButton>
                 </InputAdornment>
@@ -159,5 +211,3 @@ const RegisterPage = () => {
     </Box>
   );
 };
-
-export default RegisterPage;

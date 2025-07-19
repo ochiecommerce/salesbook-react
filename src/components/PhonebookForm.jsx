@@ -1,12 +1,10 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { TextField, Button, Checkbox, FormControlLabel, Box, Alert } from "@mui/material";
+import { TextField, Button, Box, Alert } from "@mui/material";
 import { createPhonebook } from "../api";
-import { Error } from "@mui/icons-material";
 const PhonebookForm = () => {
   const [name, setName] = useState("");
   const [description,setDescription]=useState("")
-  const [shared, setShared] = useState(false);
   const [error,setError]=useState(null)
   const navigate = useNavigate()
   const handleSubmit = (e) => {
@@ -25,8 +23,10 @@ const PhonebookForm = () => {
           setError(error)
         });
       setName(""); // Reset the form
-      setShared(false); // Reset the shared checkbox
-    }
+      setDescription("")
+    } else {
+      setError({ data: { description: "Phonebook name is required." } });
+    } 
   };
 
   return (
