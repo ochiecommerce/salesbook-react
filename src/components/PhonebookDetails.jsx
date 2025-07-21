@@ -18,10 +18,12 @@ import {
   Accordion,
   AccordionSummary,
 } from "@mui/material";
-import { getPhonebook } from "../api";
+import { addReadPermission, getPhonebook } from "../api";
 import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import { addColumn } from "../api";
+import UsernameInput from "./UsernameInput";
+import { Username } from "./User";
 const AddColumn = ({ phonebook, onDone }) => {
   const [name, setName] = useState("");
   const [error, setError] = useState(null);
@@ -55,7 +57,12 @@ const AddColumn = ({ phonebook, onDone }) => {
           <Button onClick={() => setOpen(false)} color="primary">
             Cancel
           </Button>
-          <Button color="primary" variant="contained" onClick={submit}>
+          <Button
+            disabled={!name.trim()}
+            color="primary"
+            variant="contained"
+            onClick={submit}
+          >
             Submit
           </Button>
         </DialogActions>
@@ -64,7 +71,7 @@ const AddColumn = ({ phonebook, onDone }) => {
   );
 };
 
-const Columns = ({ columns }) => {
+const Columns = ({ columns, onColumnsChange, phonebookId }) => {
   return (
     <Accordion>
       <AccordionSummary>
@@ -73,47 +80,79 @@ const Columns = ({ columns }) => {
       <List>
         {columns && (
           <Stack>
-            {columns.map((column) => (
-              <ListItem>
-                <Typography key={parseInt(Math.random() * 1000)}>
-                  {column.name}
-                </Typography>
+            {columns.map((column, index) => (
+              <ListItem key={index}>
+                <Typography >{column.name}</Typography>
               </ListItem>
             ))}
           </Stack>
         )}
       </List>
-      <AddColumn
-        phonebook={columns[0].phonebook}
-        onDone={() => (columns = columns)}
+      <AddColumn phonebook={phonebookId} onDone={onColumnsChange} />
+    </Accordion>
+  );
+};
+
+const AddReadPermission = ({ phonebookId, onPermissionsChange }) => {
+  const [uid, setUid] = useState(null);
+  const [error, setError] = useState(null);
+  const [open, setOpen] = useState(false);
+
+  const onOk = () => {
+    addReadPermission(phonebookId, uid).then((res) => {
+      onPermissionsChange();
+      setOpen(false);
+    });
+  };
+  return (
+    <Fragment>
+      <Button onClick={() => setOpen(true)}>Add Read Permission</Button>
+      <Dialog open={open}>
+        <DialogTitle>Add Read Permission</DialogTitle>
+        <DialogContent>
+          <UsernameInput setId={setUid} setError={setError} />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpen(false)}>Cancel</Button>
+          <Button disabled={!!error} onClick={onOk}>
+            Ok
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </Fragment>
+  );
+};
+
+const ReadPermissions = ({ permissions, onPermissionsChange, phonebookId }) => {
+  return (
+    <Accordion>
+      <AccordionSummary>
+        <Typography variant="h6">Read Permissions</Typography>
+      </AccordionSummary>
+      {permissions && (
+        <List>
+          {permissions.map((permission, index) => (
+            <ListItem key={index}>
+              <Username id={permission.user} />
+            </ListItem>
+          ))}
+        </List>
+      )}
+      <AddReadPermission
+        phonebookId={phonebookId}
+        onPermissionsChange={onPermissionsChange}
       />
     </Accordion>
   );
 };
 
-const ReadPermissions = ({permissions})=>{
-  return (<Accordion>
-    <AccordionSummary>
-      <Typography variant="h6">Read Permissions</Typography>
-    </AccordionSummary>
-    <List>
-      {permissions && (
-        <Stack>
-          {permissions.map((permission) => (
-            <ListItem key={permission.id}>
-              <Typography> {permission.user.username} - {permission.permission_type} </Typography>
-            </ListItem>
-          ))}
-        </Stack>
-      )}
-    </List>
-  </Accordion>);
-}
-
 const PhonebookDetails = () => {
   const { phonebookId } = useParams();
   const navigate = useNavigate();
   let [phonebook, setPhonebook] = useState({});
+  const reloadPhonebook = () => {
+    getPhonebook(phonebookId).then((res) => setPhonebook(res.data));
+  };
   useEffect(() => {
     getPhonebook(phonebookId).then((res) => {
       setPhonebook(res.data);
@@ -127,14 +166,23 @@ const PhonebookDetails = () => {
             {phonebook.name}
           </Typography>
           <Typography variant="body1" color="textSecondary">
-            Owned by: {phonebook?.creator?.username}
+            Created by: {phonebook?.creator?.username}
           </Typography>
           <Typography variant="body2" color="textSecondary">
             {phonebook.contact_count} contacts
           </Typography>
         </CardContent>
       </Card>
-      <Columns columns={phonebook.columns} />
+      <Columns
+        phonebookId={phonebookId}
+        columns={phonebook.columns}
+        onColumnsChange={reloadPhonebook}
+      />
+      <ReadPermissions
+        phonebookId={phonebookId}
+        permissions={phonebook.read_permissions}
+        onPermissionsChange={reloadPhonebook}
+      />
       <Box mt={2} textAlign="center">
         <Typography variant="body2" color="textSecondary">
           Manage your phonebook and contacts efficiently.

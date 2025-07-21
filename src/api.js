@@ -1,40 +1,37 @@
 // src/api.js
 import axios from "axios";
 
-export const checkUsername = (username) => {
-  return axios.get(`/api/user/check/?username=${username}`);
-};
-function getCookie(name) {
-  let cookieValue = null;
-  if (document.cookie && document.cookie !== "") {
-    const cookies = document.cookie.split(";");
-    for (let i = 0; i < cookies.length; i++) {
-      const cookie = cookies[i].trim();
-      // Does this cookie string begin with the name we want?
-      if (cookie.substring(0, name.length + 1) === name + "=") {
-        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-        break;
-      }
-    }
-  }
-  return cookieValue;
-}
-
-export const getCsrfToken = () => {
-  const csrfToken = getCookie("csrftoken");
-  if (!csrfToken) {
-    console.error("CSRF token not found");
-  }
-  return csrfToken;
-};
-
 const apiClient = axios.create({
-  baseURL: "/api", // Adjust the base URL as needed
-  headers: {
-    Authorization: `Token ${localStorage.getItem("token")}`, // or however you manage auth tokens
-    "X-CSRFToken": getCookie("csrftoken"),
-  },
+  baseURL: "/api",
 });
+
+// Helper to update Authorization when token changes
+export const setAuthToken = (token) => {
+  if (token) {
+    localStorage.setItem("token", token);
+    apiClient.defaults.headers.common["Authorization"] = `Token ${token}`;
+  } else {
+    delete apiClient.defaults.headers["Authorization"];
+  }
+};
+
+export const checkUsername = (details) => {
+  if (details.username)return apiClient.get(`/user/check/?username=${details?.username}`);
+  if (details.id)return apiClient.get(`/user/check/?id=${details?.id}`);
+  
+};
+
+export const login = (credentials) => {
+  return apiClient.post("/auth/login/", credentials);
+};
+
+export const logout = () => {
+  return apiClient.get("/auth/logout/");
+};
+
+export const getUser = () => {
+  return apiClient.get("/auth/user/");
+};
 
 export const searchUsers = (query) => {
   return apiClient.get(`/user/search/?q=${query}`);
@@ -53,6 +50,9 @@ export const createPhonebook = (data) => {
 
 export const updatePhonebook = (id, data) =>
   apiClient.put(`/phonebooks/${id}`, data);
+
+export const addReadPermission = (phonebookId, user) =>
+  apiClient.post(`/phonebooks/${phonebookId}/read_permissions/`, {user});
 
 // Contacts
 export const getContacts = (phonebookId) =>

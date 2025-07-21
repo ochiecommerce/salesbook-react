@@ -1,8 +1,5 @@
 import React from "react";
 
-// Pages / Components
-
-
 import { AuthProvider } from "./context/AuthContext";
 import NavigationDrawer from "./components/NavigationDrawer";
 import AppRoutes from "./AppRoutes";

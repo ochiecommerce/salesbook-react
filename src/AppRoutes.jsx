@@ -16,9 +16,9 @@ import LoginDialog from "./components/LoginPage";
 import NotesPage from "./components/NotesPage";
 
 const PrivateRoute = ({ children }) => {
-  const { token } = useAuth();
+  const { user } = useAuth();
   const [authenticated, setAuthenticated] = useState(false)
-  return token || authenticated ? children : <LoginDialog setAuthenticated={setAuthenticated} />;
+  return user || authenticated ? children : <LoginDialog setAuthenticated={setAuthenticated} />;
 };
 const AppRoutes = ()=>{
     return (<Routes>

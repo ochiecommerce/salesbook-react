@@ -1,5 +1,5 @@
 // components/RegisterPage.jsx
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useRef } from "react";
 import {
   Box,
   Button,
@@ -21,6 +21,7 @@ import { useAuth } from "../context/AuthContext";
 export const UsernameInput = ({ username,setUsername}) => {
   const [usernameError, setUsernameError] = useState("");
   const debounceTimeout = useRef(null);
+  
   const handleUsernameChange = (e) => {
     const value = e.target.value;
     setUsername(value);
@@ -33,7 +34,7 @@ export const UsernameInput = ({ username,setUsername}) => {
 
     debounceTimeout.current = setTimeout(() => {
       if (value.length >= 3) {
-        checkUsername(value)
+        checkUsername({username:value})
           .then((response) => {
             if (!response.data.valid) {
               setUsernameError(
@@ -41,7 +42,8 @@ export const UsernameInput = ({ username,setUsername}) => {
               );
             }
           })
-          .catch(() => {
+          .catch((e) => {
+            console.log(e)
             setUsernameError("Could not validate username");
           });
       }
@@ -105,6 +107,7 @@ export const RegisterPage = () => {
         navigate("/");
       })
       .catch((err) => {
+        console.log(err)
         const errors = err.response?.data?.non_field_errors?.[0];
         const usernameErrors = err.response?.data?.username?.join(", ");
         setGlobalError(
@@ -201,7 +204,7 @@ export const RegisterPage = () => {
           <Box mt={2} textAlign="center">
             <Typography variant="body2">
               Already have an account?{" "}
-              <Link component={RouterLink} to="/login">
+              <Link component={RouterLink} to="/">
                 Login here
               </Link>
             </Typography>

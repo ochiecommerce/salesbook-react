@@ -19,12 +19,13 @@ import Loading from "./Loading";
 import AddIcon from "@mui/icons-material/Add";
 import ContactForm from "./ContactForm";
 
-const NewContact = ({ open }) => {
+const NewContact = ({ open,onDone,onCancel }) => {
+
   return (
     <Dialog open={open}>
       <DialogTitle>New Contact</DialogTitle>
       <DialogContent>
-        <ContactForm />
+        <ContactForm onSubmit={onDone} onCancel={onCancel}/>
       </DialogContent>
     </Dialog>
   );
@@ -38,7 +39,7 @@ const ContactList = ({ contacts }) => {
 
   return (
     <>
-      <NewContact open={creating} />
+      <NewContact open={creating} onDone={_=>setCreating(false)} onCancel={_=>setCreating(false)}/>
 
       <List sx={{ width: "100%", bgcolor: "background.paper" }}>
         {contacts.length === 0 && (
