@@ -14,6 +14,7 @@ import { useAuth } from "./context/AuthContext";
 import { RegisterPage } from "./components/RegisterPage";
 import LoginDialog from "./components/LoginPage";
 import NotesPage from "./components/NotesPage";
+import PhonebookPage from "./components/PhonebookPage";
 
 const PrivateRoute = ({ children }) => {
   const { user } = useAuth();
@@ -30,6 +31,7 @@ const AppRoutes = ()=>{
               <PhonebookList />
             </PrivateRoute>
           }
+
         />
         <Route path="/notes" element={<PrivateRoute><NotesPage/></PrivateRoute>}/>
         <Route
@@ -42,7 +44,7 @@ const AppRoutes = ()=>{
         />
 
         <Route path="/phonebooks/new" element={<PrivateRoute><PhonebookForm /></PrivateRoute>} />
-        <Route path="/phonebooks/:phonebookId" element={<PrivateRoute><PhonebookDetails /></PrivateRoute>} />
+        <Route path="/phonebooks/:phonebookId" element={<PrivateRoute><PhonebookPage /></PrivateRoute>} />
 
         {/* Contact Routes */}
         <Route path="/phonebooks/:phonebookId/contacts" element={<PrivateRoute><ContactList /></PrivateRoute>} />

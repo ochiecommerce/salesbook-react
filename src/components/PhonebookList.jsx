@@ -9,6 +9,7 @@ import {
   Fab,
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
+import Loading from "./Loading";
 
 const PhonebookList = () => {
   const [phonebooks, setPhonebooks] = useState([]);
@@ -26,7 +27,7 @@ const PhonebookList = () => {
 
     fetchPhonebooks();
   }, []); // ✅ Only fetch on component mount
-  if (!phonebooks) return <div>Loading...</div>;
+  if (!phonebooks) return <Loading text={"phonebooks"} />;
   if (phonebooks.length === 0) {
     return (
       <div style={{ textAlign: "center", marginTop: "20px" }}>

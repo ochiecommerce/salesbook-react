@@ -24,6 +24,7 @@ import { useParams } from "react-router-dom";
 import { addColumn } from "../api";
 import UsernameInput from "./UsernameInput";
 import { Username } from "./User";
+import { ListView } from "./ListView";
 const AddColumn = ({ phonebook, onDone }) => {
   const [name, setName] = useState("");
   const [error, setError] = useState(null);
@@ -77,17 +78,15 @@ const Columns = ({ columns, onColumnsChange, phonebookId }) => {
       <AccordionSummary>
         <Typography variant="h6">Columns</Typography>
       </AccordionSummary>
-      <List>
-        {columns && (
-          <Stack>
-            {columns.map((column, index) => (
-              <ListItem key={index}>
-                <Typography >{column.name}</Typography>
-              </ListItem>
-            ))}
-          </Stack>
-        )}
-      </List>
+      <ListView
+        Component={({row}) => {
+          return (
+          <ListItem>
+            <Typography>{row.name}</Typography>
+          </ListItem>
+        )}}
+        data={columns}
+      />
       <AddColumn phonebook={phonebookId} onDone={onColumnsChange} />
     </Accordion>
   );
@@ -146,18 +145,8 @@ const ReadPermissions = ({ permissions, onPermissionsChange, phonebookId }) => {
   );
 };
 
-const PhonebookDetails = () => {
-  const { phonebookId } = useParams();
-  const navigate = useNavigate();
-  let [phonebook, setPhonebook] = useState({});
-  const reloadPhonebook = () => {
-    getPhonebook(phonebookId).then((res) => setPhonebook(res.data));
-  };
-  useEffect(() => {
-    getPhonebook(phonebookId).then((res) => {
-      setPhonebook(res.data);
-    });
-  }, [phonebookId]);
+const PhonebookDetails = ({phonebook,reloadPhonebook}) => {
+  const phonebookId = phonebook.pk
   return (
     <Box>
       <Card sx={{ mb: 2 }}>
@@ -188,13 +177,7 @@ const PhonebookDetails = () => {
           Manage your phonebook and contacts efficiently.
         </Typography>
       </Box>
-      <Button
-        variant="contained"
-        color="primary"
-        onClick={() => navigate(`/phonebooks/${phonebookId}/contacts`)}
-      >
-        Show Contacts
-      </Button>
+
     </Box>
   );
 };

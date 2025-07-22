@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import {
   List,
   ListItem,
@@ -13,7 +13,6 @@ import {
 } from "@mui/material";
 import { Phone } from "@mui/icons-material";
 import { useNavigate, useParams } from "react-router-dom";
-import { getContacts } from "../api";
 import { useState } from "react";
 import Loading from "./Loading";
 import AddIcon from "@mui/icons-material/Add";
@@ -32,10 +31,11 @@ const NewContact = ({ open,onDone,onCancel }) => {
 };
 const ContactList = ({ contacts }) => {
   const { phonebookId } = useParams();
+  
   const [creating, setCreating] = useState(contacts.length === 0);
   const navigate = useNavigate();
   
-  if (!contacts) return <Loading text={"contacts"} />;
+  
 
   return (
     <>
@@ -97,19 +97,5 @@ const ContactList = ({ contacts }) => {
   );
 };
 
-const ContactsPage = () => {
-  const { phonebookId } = useParams();
-  const [contacts, setContacts] = useState();
-  useEffect(() => {
-    getContacts(phonebookId)
-      .then((res) => {
-        setContacts(res.data?.data);
-      })
-      .catch((err) => console.log(err));
-  }, [phonebookId]);
 
-  if (!contacts) return <Loading text={"contacts"} />;
-  return <ContactList contacts={contacts} />;
-};
-
-export default ContactsPage;
+export default ContactList;
