@@ -21,6 +21,10 @@ export const checkUsername = (details) => {
   
 };
 
+export const register = (details) => {
+  return apiClient.post("/auth/registration/", details);
+};
+
 export const login = (credentials) => {
   return apiClient.post("/auth/login/", credentials);
 };
@@ -37,9 +41,6 @@ export const searchUsers = (query) => {
   return apiClient.get(`/user/search/?q=${query}`);
 };
 
-export const registerUser = (data) => {
-  return apiClient.post(`/auth/registration/`, data);
-};
 
 // Phonebooks
 export const getPhonebooks = () => apiClient.get(`/phonebooks`);

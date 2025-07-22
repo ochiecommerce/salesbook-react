@@ -15,7 +15,7 @@ import {
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { useNavigate, Link as RouterLink } from "react-router-dom";
 import axios from "axios";
-import { checkUsername } from "../api";
+import { checkUsername, register } from "../api";
 import { useAuth } from "../context/AuthContext";
 
 export const UsernameInput = ({ username,setUsername}) => {
@@ -93,8 +93,7 @@ export const RegisterPage = () => {
       return;
     }
 
-    axios
-      .post("/api/auth/registration/", {
+    register({
         email,
         username,
         password1,
