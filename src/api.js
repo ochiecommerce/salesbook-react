@@ -2,7 +2,7 @@
 import axios from "axios";
 
 const apiClient = axios.create({
-  baseURL: "/api",
+  baseURL: process.env.REACT_APP_API_URL || "http://localhost:8000/api",
 });
 
 // Helper to update Authorization when token changes
