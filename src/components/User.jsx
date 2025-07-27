@@ -1,6 +1,6 @@
 import { Typography } from "@mui/material"
 import { useEffect, useState } from "react"
-import { checkUsername } from "../api"
+import { checkUsername } from "../api/auth"
 import Loading from "./Loading"
 
 export const Username = ({id})=>{

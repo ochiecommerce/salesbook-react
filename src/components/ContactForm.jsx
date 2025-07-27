@@ -8,7 +8,7 @@ import {
   Stack,
 } from "@mui/material";
 
-import { createContact } from "../api";
+import { createContact } from "../api/contacts";
 import { useNavigate, useParams } from "react-router-dom";
 
 const ContactForm = ({ onSubmit, contact = null, onCancel }) => {

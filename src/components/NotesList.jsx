@@ -2,7 +2,7 @@ import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Divider, Fab
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import AddIcon from '@mui/icons-material/Add'
-import { createNote } from "../api";
+import { createNote } from "../api/contacts";
 
 const NewNote = ({open,setOpen})=>{
     const [note,setNote] = useState('')

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { getPhonebooks } from "../api"; // Assumes axios or fetch wrapper
+import { getPhonebooks } from "../api/contacts"; // Assumes axios or fetch wrapper
 import { useNavigate } from "react-router-dom";
 import {
   Card,

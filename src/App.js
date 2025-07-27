@@ -3,6 +3,7 @@ import React from "react";
 import { AuthProvider } from "./context/AuthContext";
 import NavigationDrawer from "./components/NavigationDrawer";
 import AppRoutes from "./AppRoutes";
+import { NavigationBar } from "./components/NavigationBar";
 
 
 const App = () => {
@@ -10,6 +11,7 @@ const App = () => {
   return (
     <AuthProvider>
         <NavigationDrawer/>
+        <NavigationBar/>
         <AppRoutes/>
     </AuthProvider>)
 }

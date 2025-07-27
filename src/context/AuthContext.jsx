@@ -5,7 +5,7 @@ import {
   logout as _logout,
   setAuthToken,
   getUser,
-} from "../api";
+} from "../api/auth";
 
 const AuthContext = createContext();
 export const useAuth = () => useContext(AuthContext);

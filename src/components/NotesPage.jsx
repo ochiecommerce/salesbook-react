@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { getNotes } from "../api";
+import { getNotes } from "../api/contacts";
 import NotesList from "./NotesList";
 import { Snackbar } from "@mui/material";
 

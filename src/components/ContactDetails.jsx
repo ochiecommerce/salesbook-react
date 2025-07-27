@@ -14,8 +14,8 @@ import {
   DialogActions,
   Stack,
 } from "@mui/material";
-import { createNote, getContact } from "../api";
 import { Username } from "./User";
+import { createNote, getContact } from "../api/contacts";
 
 const NewNote = ({ open, onDone, contact }) => {
   const [note, setNote] = useState("");

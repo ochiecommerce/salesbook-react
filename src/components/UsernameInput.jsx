@@ -1,4 +1,4 @@
-import { checkUsername } from "../api";
+import { checkUsername } from "../api/auth";
 import { TextField } from "@mui/material";
 import { useRef, useState } from "react";
 

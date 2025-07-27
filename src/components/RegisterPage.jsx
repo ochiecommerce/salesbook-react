@@ -14,8 +14,7 @@ import {
 } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { useNavigate, Link as RouterLink } from "react-router-dom";
-import axios from "axios";
-import { checkUsername, register } from "../api";
+import { checkUsername, register } from "../api/auth";
 import { useAuth } from "../context/AuthContext";
 
 export const UsernameInput = ({ username,setUsername}) => {

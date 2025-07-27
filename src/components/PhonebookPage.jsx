@@ -10,7 +10,7 @@ import {
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import { useParams } from "react-router-dom";
-import { getContacts, getPhonebook } from "../api";
+import { getContacts, getPhonebook } from "../api/contacts";
 import PhonebookDetails from "./PhonebookDetails";
 import ContactList from "./ContactList";
 import Loading from "./Loading";

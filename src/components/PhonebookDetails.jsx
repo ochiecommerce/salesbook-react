@@ -1,12 +1,11 @@
 // components/PhonebookDetails.jsx
-import React, { Fragment, useEffect, useState } from "react";
+import React, { Fragment, useState } from "react";
 import {
   Button,
   Typography,
   Box,
   Card,
   CardContent,
-  Stack,
   TextField,
   Alert,
   Dialog,
@@ -18,10 +17,8 @@ import {
   Accordion,
   AccordionSummary,
 } from "@mui/material";
-import { addReadPermission, getPhonebook } from "../api";
-import { useNavigate } from "react-router-dom";
-import { useParams } from "react-router-dom";
-import { addColumn } from "../api";
+import { addReadPermission } from "../api/contacts";
+import { addColumn } from "../api/contacts";
 import UsernameInput from "./UsernameInput";
 import { Username } from "./User";
 import { ListView } from "./ListView";
