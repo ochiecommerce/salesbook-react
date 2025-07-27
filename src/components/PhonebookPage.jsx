@@ -37,22 +37,7 @@ const PhonebookPage = () => {
   const [collapsed, setCollapsed] = useState(false);
   const detailsRef = useRef(null); // ✅ useRef instead of string ref
 
-  // Collapse when phonebook details reach top
-  useEffect(() => {
-    const handleScroll = () => {
-      const scrollY = window.scrollY;
-
-      if (scrollY <= 20 && collapsed) {
-        setCollapsed(false); // Expand when scrolling back to top
-      } else if (scrollY > 60 && !collapsed) {
-        setCollapsed(true); // Collapse when scrolling down
-      }
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, [collapsed]);
-
+ 
   const toggleCollapsed = () => {
     setCollapsed((prev) => !prev);
   };

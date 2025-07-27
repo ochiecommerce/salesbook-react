@@ -13,7 +13,7 @@ export default function NotesPage() {
             setError(err)
 
         })
-    })
+    },[])
     return (
         <><NotesList notes={notes} />
             <Snackbar content="Error occured" open={Boolean(error)}/></>
