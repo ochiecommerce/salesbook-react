@@ -15,8 +15,7 @@ import {
   Box,
   CircularProgress,
 } from "@mui/material";
-import { fetchOrders } from "../api/orders";
-
+import { getOrders } from '../../api/orders'
 export default function OrdersPage() {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -27,7 +26,7 @@ export default function OrdersPage() {
   const loadOrders = async () => {
     setLoading(true);
     try {
-      const data = await fetchOrders(page, search);
+      const data = await getOrders(page, search);
       setOrders(data.results || []);
       setTotalPages(Math.ceil(data.count / 10)); // assuming 10 per page
     } finally {

@@ -1,7 +1,7 @@
 import React from "react";
 
 import { AuthProvider } from "./context/AuthContext";
-import NavigationDrawer from "./components/NavigationDrawer";
+import NavigationDrawer from "./components/TreeNav";
 import AppRoutes from "./AppRoutes";
 import { NavigationBar } from "./components/NavigationBar";
 

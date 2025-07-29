@@ -17,11 +17,11 @@ import {
   Accordion,
   AccordionSummary,
 } from "@mui/material";
-import { addReadPermission } from "../api/contacts";
-import { addColumn } from "../api/contacts";
-import UsernameInput from "./UsernameInput";
-import { Username } from "./User";
-import { ListView } from "./ListView";
+import { addReadPermission } from "../../api/contacts";
+import { addColumn } from "../../api/contacts";
+import UsernameInput from "../UsernameInput";
+import { Username } from "../User";
+import { ListView } from "../ListView";
 const AddColumn = ({ phonebook, onDone }) => {
   const [name, setName] = useState("");
   const [error, setError] = useState(null);

@@ -28,6 +28,9 @@ export const register = (details) => {
 export const login = (credentials) => {
   return apiClient.post("/auth/login/", credentials);
 };
+export const resetPassword = (data)=>apiClient.post('/user/password/reset/',data)
+
+export const resetPasswordConfirm = (data)=>apiClient.post('/user/password/reset/confirm/',data)
 
 export const logout = () => {
   return apiClient.get("/auth/logout/");

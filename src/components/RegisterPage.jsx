@@ -16,6 +16,35 @@ import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { useNavigate, Link as RouterLink } from "react-router-dom";
 import { checkUsername, register } from "../api/auth";
 import { useAuth } from "../context/AuthContext";
+import { DataGrid } from '@mui/x-data-grid';
+
+const columns = [
+  { field: 'id', headerName: 'ID', width: 90 },
+  { field: 'name', headerName: 'Name', width: 150 },
+  { field: 'age', headerName: 'Age', type: 'number', width: 110 },
+];
+
+const rows = [
+  { id: 1, name: 'Alice', age: 25 },
+  { id: 2, name: 'Bob', age: 30 },
+  { id: 3, name: 'Charlie', age: 35 },
+];
+
+export  function MyDataGrid() {
+  return (
+    <Box sx={{ height: 400, width: '100%' }}>
+      <DataGrid
+        rows={rows}
+        columns={columns}
+        pageSizeOptions={[5]}
+        initialState={{
+          pagination: { paginationModel: { pageSize: 5 } },
+        }}
+      />
+    </Box>
+  );
+}
+
 
 export const UsernameInput = ({ username,setUsername}) => {
   const [usernameError, setUsernameError] = useState("");
@@ -209,6 +238,7 @@ export const RegisterPage = () => {
           </Box>
         </form>
       </Paper>
+      <MyDataGrid/>
     </Box>
   );
 };

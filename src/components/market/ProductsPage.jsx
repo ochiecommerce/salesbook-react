@@ -12,7 +12,7 @@ import {
   Box,
   CircularProgress,
 } from "@mui/material";
-import { fetchProducts } from "../api/products";
+import { getProducts } from "../../api/market";
 
 export default function ProductsPage() {
   const [products, setProducts] = useState([]);
@@ -24,7 +24,7 @@ export default function ProductsPage() {
   const loadProducts = async () => {
     setLoading(true);
     try {
-      const data = await fetchProducts(page, search);
+      const data = await getProducts(page, search);
       setProducts(data.results || []);
       setTotalPages(Math.ceil(data.count / 9)); // matches DRF pagination
     } finally {

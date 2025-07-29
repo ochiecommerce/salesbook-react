@@ -90,7 +90,14 @@ const LoginDialog = ({setAuthenticated}) => {
               ),
             }}
           />
-
+          <Box mt={2} textAlign="center">
+            <Typography variant="body2">
+              Forgot password?{" "}
+              <Link component={RouterLink} to="/reset_password">
+                Reset
+              </Link>
+            </Typography>
+          </Box>
           <Box mt={2} textAlign="center">
             <Typography variant="body2">
               Don't have an account?{" "}

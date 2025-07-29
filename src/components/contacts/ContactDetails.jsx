@@ -14,8 +14,8 @@ import {
   DialogActions,
   Stack,
 } from "@mui/material";
-import { Username } from "./User";
-import { createNote, getContact } from "../api/contacts";
+import { Username } from "../User";
+import { createNote, getContact } from "../../api/contacts";
 
 const NewNote = ({ open, onDone, contact }) => {
   const [note, setNote] = useState("");
@@ -51,7 +51,7 @@ const ContactDetails = () => {
     getContact(phonebookId, contactId).then((res) => {
       setContact(res.data);
     });
-  }, []);
+  }, [contactId]);
 
   return (
     <Card sx={{ mt: 4 }}>
