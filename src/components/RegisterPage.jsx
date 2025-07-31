@@ -16,40 +16,11 @@ import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { useNavigate, Link as RouterLink } from "react-router-dom";
 import { checkUsername, register } from "../api/auth";
 import { useAuth } from "../context/AuthContext";
-import { DataGrid } from '@mui/x-data-grid';
 
-const columns = [
-  { field: 'id', headerName: 'ID', width: 90 },
-  { field: 'name', headerName: 'Name', width: 150 },
-  { field: 'age', headerName: 'Age', type: 'number', width: 110 },
-];
-
-const rows = [
-  { id: 1, name: 'Alice', age: 25 },
-  { id: 2, name: 'Bob', age: 30 },
-  { id: 3, name: 'Charlie', age: 35 },
-];
-
-export  function MyDataGrid() {
-  return (
-    <Box sx={{ height: 400, width: '100%' }}>
-      <DataGrid
-        rows={rows}
-        columns={columns}
-        pageSizeOptions={[5]}
-        initialState={{
-          pagination: { paginationModel: { pageSize: 5 } },
-        }}
-      />
-    </Box>
-  );
-}
-
-
-export const UsernameInput = ({ username,setUsername}) => {
+export const UsernameInput = ({ username, setUsername }) => {
   const [usernameError, setUsernameError] = useState("");
   const debounceTimeout = useRef(null);
-  
+
   const handleUsernameChange = (e) => {
     const value = e.target.value;
     setUsername(value);
@@ -62,7 +33,7 @@ export const UsernameInput = ({ username,setUsername}) => {
 
     debounceTimeout.current = setTimeout(() => {
       if (value.length >= 3) {
-        checkUsername({username:value})
+        checkUsername({ username: value })
           .then((response) => {
             if (!response.data.valid) {
               setUsernameError(
@@ -71,7 +42,7 @@ export const UsernameInput = ({ username,setUsername}) => {
             }
           })
           .catch((e) => {
-            console.log(e)
+            console.log(e);
             setUsernameError("Could not validate username");
           });
       }
@@ -95,7 +66,7 @@ export const UsernameInput = ({ username,setUsername}) => {
 
 export const RegisterPage = () => {
   const navigate = useNavigate();
-  const {setToken } = useAuth()
+  const { setToken } = useAuth();
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [password1, setPassword1] = useState("");
@@ -104,11 +75,9 @@ export const RegisterPage = () => {
   const [loading, setLoading] = useState(false);
   const [globalError, setGlobalError] = useState("");
 
-
   const handleTogglePassword = () => {
     setShowPassword(!showPassword);
   };
-
 
   const handleRegister = async (e) => {
     e.preventDefault();
@@ -122,19 +91,19 @@ export const RegisterPage = () => {
     }
 
     register({
-        email,
-        username,
-        password1,
-        password2,
-      })
+      email,
+      username,
+      password1,
+      password2,
+    })
       .then((response) => {
         const token = response.data.key;
         localStorage.setItem("token", token);
-        setToken(token)
+        setToken(token);
         navigate("/");
       })
       .catch((err) => {
-        console.log(err)
+        console.log(err);
         const errors = err.response?.data?.non_field_errors?.[0];
         const usernameErrors = err.response?.data?.username?.join(", ");
         setGlobalError(
@@ -238,7 +207,6 @@ export const RegisterPage = () => {
           </Box>
         </form>
       </Paper>
-      <MyDataGrid/>
     </Box>
   );
 };
