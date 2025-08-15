@@ -31,84 +31,9 @@ const AppRoutes = () => {
   return (
     <Routes>
       <Route path="/register" element={<RegisterPage />} />
-      <Route path="/reset_password" element={<PasswordResetStepper/>}/>
-      <Route
-        path="/"
-        element={
-          <PrivateRoute>
-            <PhonebookList />
-          </PrivateRoute>
-        }
-      />
-      <Route
-        path="/notes"
-        element={
-          <PrivateRoute>
-            <NotesPage />
-          </PrivateRoute>
-        }
-      />
-      <Route
-        path="/phonebooks"
-        element={
-          <PrivateRoute>
-            <PhonebookList />
-          </PrivateRoute>
-        }
-      />
-
-      <Route
-        path="/phonebooks/new"
-        element={
-          <PrivateRoute>
-            <PhonebookForm />
-          </PrivateRoute>
-        }
-      />
-      <Route
-        path="/phonebooks/:phonebookId"
-        element={
-          <PrivateRoute>
-            <PhonebookPage />
-          </PrivateRoute>
-        }
-      />
-
-      {/* Contact Routes */}
-      <Route
-        path="/phonebooks/:phonebookId/contacts"
-        element={
-          <PrivateRoute>
-            <ContactList />
-          </PrivateRoute>
-        }
-      />
-      <Route
-        path="/phonebooks/:phonebookId/contacts/new"
-        element={
-          <PrivateRoute>
-            <ContactForm />
-          </PrivateRoute>
-        }
-      />
-      <Route
-        path="/phonebooks/:phonebookId/contacts/:contactId"
-        element={
-          <PrivateRoute>
-            <ContactDetails />
-          </PrivateRoute>
-        }
-      />
-      <Route
-        path="/phonebooks/:phonebookId/contacts/:contactId/edit"
-        element={
-          <PrivateRoute>
-            <ContactForm />
-          </PrivateRoute>
-        }
-      />
-      <Route path="/orders" element={<OrdersPage/>}/>
-      <Route path="/products" element={<ProductsPage/>}/>
+      <Route path="/reset_password" element={<PasswordResetStepper />} />
+      <Route path="/orders" element={<OrdersPage />} />
+      <Route path="/products" element={<ProductsPage />} />
     </Routes>
   );
 };
